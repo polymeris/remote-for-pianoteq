@@ -81,6 +81,9 @@ async function get_display_data(include_demos = false) {
 
   let data = {
     volume: parameters["Volume"].normalized_value,
+    condition: parameters["Condition"].normalized_value,
+    pedal_noise: parameters["Pedal Noise"].normalized_value,
+    key_release_noise: parameters["Key Release Noise"].normalized_value,
     preset: info_result.current_preset.name,
     available_presets: available_presets,
     reverb: info_result.current_preset.mini_presets.reverb,
@@ -100,6 +103,21 @@ async function get_display_data(include_demos = false) {
 async function set_volume(level) {
   console.log(`set_volume(${level})`);
   return await rpc("setParameters", {list: [{id: "Volume", name: "Volume", normalized_value: Number(level)}]});
+}
+
+async function set_condition(level) {
+  console.log(`set_condition(${level})`);
+  return await rpc("setParameters", {list: [{id: "Condition", name: "Condition", normalized_value: Number(level)}]});
+}
+
+async function set_pedal_noise(level) {
+  console.log(`set_pedal_noise(${level})`);
+  return await rpc("setParameters", {list: [{id: "Pedal Noise", name: "Pedal Noise", normalized_value: Number(level)}]});
+}
+
+async function set_key_release_noise(level) {
+  console.log(`set_key_release_noise(${level})`);
+  return await rpc("setParameters", {list: [{id: "Key Release Noise", name: "Key Release Noise", normalized_value: Number(level)}]});
 }
 
 async function load_preset(name, bank) {
@@ -124,4 +142,4 @@ async function set_metronome(enabled) {
   return await rpc("setMetronome", {enabled: enabled});
 }
 
-export { rpc, get_display_data, load_preset, set_sound_output, set_reverb, config_metronome, set_metronome, set_volume }
+export { rpc, get_display_data, load_preset, set_sound_output, set_reverb, config_metronome, set_metronome, set_volume, set_condition, set_pedal_noise, set_key_release_noise }

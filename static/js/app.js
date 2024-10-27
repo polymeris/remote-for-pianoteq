@@ -13,6 +13,9 @@ function set_ui_disabled(ui, disabled) {
 
 function update_ui(ui, data) {
   ui.volume.value = data.volume;
+  ui.condition.value = data.condition;
+  ui.pedal_noise.value = data.pedal_noise;
+  ui.key_release_noise.value = data.key_release_noise;
 
   // Build the preset drop down.
   ui.select_preset.innerHTML = "";
@@ -92,6 +95,15 @@ async function main() {
     volume: document.getElementById("volume"),
     tickmarks: document.getElementById("tickmarks"),
 
+    condition: document.getElementById("condition"),
+    tickmarks_cond: document.getElementById("tickmarks_cond"),
+
+    pedal_noise: document.getElementById("pedal-noise"),
+    tickmarks_pedal_noise: document.getElementById("tickmarks_pedal_noise"),
+
+    key_release_noise: document.getElementById("key-release-noise"),
+    tickmarks_key_release_noise: document.getElementById("tickmarks_key_release_noise"),
+
     select_preset: document.getElementById("preset"),
     select_output_mode: document.getElementById("output-mode"),
     select_reverb: document.getElementById("reverb"),
@@ -110,11 +122,43 @@ async function main() {
     // metronome_accent: document.getElementById("metronome-accent"),
   }
 
-  for (let i = 0; i < 1; i += 0.1) ui.tickmarks.appendChild(new Option('', i));
+  for (let i = 0; i < 1; i += 0.1) {
+      ui.tickmarks.appendChild(new Option('', i));
+      ui.tickmarks_cond.appendChild(new Option('', i));
+      ui.tickmarks_pedal_noise.appendChild(new Option('', i));
+      ui.tickmarks_key_release_noise.appendChild(new Option('', i));
+  }
 
   ui.volume.addEventListener("change", async function() {
     set_ui_disabled(ui, true);
     await pianoteq.set_volume(this.value).then(async(data) => {
+      await refresh_and_reenable_ui(ui);
+    }).catch((error) => {
+      handle_error(ui, error);
+    });
+  })
+
+  ui.condition.addEventListener("change", async function() {
+    set_ui_disabled(ui, true);
+    await pianoteq.set_condition(this.value).then(async(data) => {
+      await refresh_and_reenable_ui(ui);
+    }).catch((error) => {
+      handle_error(ui, error);
+    });
+  })
+
+  ui.pedal_noise.addEventListener("change", async function() {
+    set_ui_disabled(ui, true);
+    await pianoteq.set_pedal_noise(this.value).then(async(data) => {
+      await refresh_and_reenable_ui(ui);
+    }).catch((error) => {
+      handle_error(ui, error);
+    });
+  })
+
+  ui.key_release_noise.addEventListener("change", async function() {
+    set_ui_disabled(ui, true);
+    await pianoteq.set_key_release_noise(this.value).then(async(data) => {
       await refresh_and_reenable_ui(ui);
     }).catch((error) => {
       handle_error(ui, error);
