@@ -87,12 +87,12 @@ async function get_display_data(include_demos = false) {
     preset: info_result.current_preset.name,
     available_presets: available_presets,
     reverb: info_result.current_preset.mini_presets.reverb,
-    output_mode: output_mode,
+    // output_mode: output_mode,
     data_table: [
       [info_result.product_name, info_result.version],
       ["Output", audio_device_result.audio_output_device_name],
     ],
-    metronome: metronome_result[0],
+    // metronome: metronome_result[0],
   };
 
   console.log(data);

@@ -28,7 +28,7 @@ function update_ui(ui, data) {
   ui.select_preset.value = data.preset;
 
   // Build the output mode dropdown.
-  ui.select_output_mode.value = data.output_mode;
+  // ui.select_output_mode.value = data.output_mode;
 
   // Build the reverb dropdown.
   if (!data.reverb) {
@@ -105,7 +105,7 @@ async function main() {
     tickmarks_key_release_noise: document.getElementById("tickmarks_key_release_noise"),
 
     select_preset: document.getElementById("preset"),
-    select_output_mode: document.getElementById("output-mode"),
+    // select_output_mode: document.getElementById("output-mode"),
     select_reverb: document.getElementById("reverb"),
 
     data_table: document.getElementById("data-table"),
@@ -174,14 +174,14 @@ async function main() {
     });
   })
 
-  ui.select_output_mode.addEventListener("change", async function() {
-    set_ui_disabled(ui, true);
-    await pianoteq.set_sound_output(this.value).then(async(data) => {
-      await refresh_and_reenable_ui(ui);
-    }).catch((error) => {
-      handle_error(ui, error);
-    });
-  })
+  // ui.select_output_mode.addEventListener("change", async function() {
+  //   set_ui_disabled(ui, true);
+  //   await pianoteq.set_sound_output(this.value).then(async(data) => {
+  //     await refresh_and_reenable_ui(ui);
+  //   }).catch((error) => {
+  //     handle_error(ui, error);
+  //   });
+  // })
 
   ui.select_reverb.addEventListener("change", async function() {
     set_ui_disabled(ui, true);
