@@ -1,3 +1,18 @@
+@media (prefers-color-scheme: dark) {
+  /* Invert all elements on the body while attempting to not alter the hue substantially. */
+  body {
+    filter: invert(100%) hue-rotate(180deg);
+  }
+  /*
+     Firefox workaround: Set the background colour for the html
+     element separately because, unlike other browsers, Firefox
+     doesn’t apply the filter to the root element’s background.
+  */
+  html {
+    background-color: #111;
+  }
+}
+
 body {
   padding: 0 0.5rem;
   -webkit-touch-callout: none;
