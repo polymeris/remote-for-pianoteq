@@ -103,6 +103,7 @@ form#metronome-form button {
 }
 
 footer {
+  margin-top: 4em;
   text-align: center;
   font-size: 70%;
   color: #AAA;
