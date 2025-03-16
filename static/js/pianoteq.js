@@ -45,7 +45,7 @@ async function get_display_data(include_demos = false) {
   // Info result appears to be a list for some reason
   info_result = info_result[0];
 
-  // Parse the available presets, only including the non-demo ones.
+  // Parse the available presets, by instrument, only including the non-demo ones.
   let available_presets = {};
   for (let i in preset_result) {
     let preset = preset_result[i];
@@ -53,15 +53,19 @@ async function get_display_data(include_demos = false) {
       continue;
     }
 
+    if (!available_presets[preset.instr]) {
+      available_presets[preset.instr] = {}
+    }
+
     // ES2015 should guarentee that iteration order is in insertion order.
-    available_presets[preset.name] = {bank: preset.bank};
+    available_presets[preset.instr][preset.name] = {bank: preset.bank};
   }
 
   if (!(info_result.current_preset.name in available_presets)) {
     // Invalid bank value is OK, because this entry is only used for display,
     // as we will never switch from the same instrument to itself with the
     // dropdown menu.
-    available_presets[info_result.current_preset.name] = {bank: ""};
+    available_presets[info_result.current_preset.instrument][info_result.current_preset.name] = {bank: ""};
   }
 
   // Parsing parameters result
@@ -84,6 +88,7 @@ async function get_display_data(include_demos = false) {
     condition: parameters["Condition"].normalized_value,
     pedal_noise: parameters["Pedal Noise"].normalized_value,
     key_release_noise: parameters["Key Release Noise"].normalized_value,
+    instrument: info_result.current_preset.instrument,
     preset: info_result.current_preset.name,
     available_presets: available_presets,
     reverb: info_result.current_preset.mini_presets.reverb,

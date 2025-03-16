@@ -11,21 +11,35 @@ function set_ui_disabled(ui, disabled) {
   }
 }
 
-function update_ui(ui, data) {
-  ui.volume.value = data.volume;
-  ui.condition.value = data.condition;
-  ui.pedal_noise.value = data.pedal_noise;
-  ui.key_release_noise.value = data.key_release_noise;
-
+function populate_preset_dropdown(ui, data, instrument) {
   // Build the preset drop down.
   ui.select_preset.innerHTML = "";
-  for (let preset_name in data.available_presets) {
+  for (let preset_name in data.available_presets[instrument]) {
     let option = document.createElement("option");
     option.value = preset_name;
     option.text = preset_name;
     ui.select_preset.appendChild(option);
   }
   ui.select_preset.value = data.preset;
+}
+
+function update_ui(ui, data) {
+  ui.volume.value = data.volume;
+  ui.condition.value = data.condition;
+  ui.pedal_noise.value = data.pedal_noise;
+  ui.key_release_noise.value = data.key_release_noise;
+
+  // Build the instrument drop down.
+  ui.select_instrument.innerHTML = "";
+  for (let instrument_name in data.available_presets) {
+    let option = document.createElement("option");
+    option.value = instrument_name;
+    option.text = instrument_name;
+    ui.select_instrument.appendChild(option);
+  }
+  ui.select_instrument.value = data.instrument;
+
+  populate_preset_dropdown(ui, data, data.instrument);
 
   // Build the output mode dropdown.
   // ui.select_output_mode.value = data.output_mode;
@@ -104,6 +118,7 @@ async function main() {
     key_release_noise: document.getElementById("key-release-noise"),
     tickmarks_key_release_noise: document.getElementById("tickmarks_key_release_noise"),
 
+    select_instrument: document.getElementById("instrument"),
     select_preset: document.getElementById("preset"),
     // select_output_mode: document.getElementById("output-mode"),
     select_reverb: document.getElementById("reverb"),
@@ -165,9 +180,13 @@ async function main() {
     });
   })
 
+  ui.select_instrument.addEventListener("change",  function() {
+    populate_preset_dropdown(ui, pianoteq_data, this.value);
+  })
+
   ui.select_preset.addEventListener("change", async function() {
     set_ui_disabled(ui, true);
-    await pianoteq.load_preset(this.value, pianoteq_data.available_presets[this.value].bank).then(async(data) => {
+    await pianoteq.load_preset(this.value, pianoteq_data.available_presets[ui.select_instrument.value][this.value].bank).then(async(data) => {
       await refresh_and_reenable_ui(ui);
     }).catch((error) => {
       handle_error(ui, error);
