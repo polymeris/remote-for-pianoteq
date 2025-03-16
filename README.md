@@ -1,3 +1,10 @@
+This is a fork of https://github.com/shuhaowu/remote-for-pianoteq for my own
+use.
+I have removed the metronome controls, added an instrument dropdown and some
+other sliders. Also rearranged UI a bit (see screenshot below).
+
+---
+
 Remote for Pianoteq
 ===================
 
@@ -12,7 +19,7 @@ ensure that the application is fast even on the lowest end Android devices. I
 personally use an older, low-end phone as the controller for my Pianoteq
 installation on a Raspberry Pi 4 (with realtime patch).
 
-<img width="400" alt="" src="remote-for-pianoteq.jpg">
+<img width="400" alt="" src="remote-for-pianoteq.png">
 
 See forum thread: https://forum.modartt.com/viewtopic.php?id=9073
 
