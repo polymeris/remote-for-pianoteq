@@ -28,6 +28,7 @@ function update_ui(ui, data) {
   ui.condition.value = data.condition;
   ui.pedal_noise.value = data.pedal_noise;
   ui.key_release_noise.value = data.key_release_noise;
+  ui.reverb_mix.value = data.reverb_mix;
 
   // Build the instrument drop down.
   ui.select_instrument.innerHTML = "";
@@ -118,6 +119,9 @@ async function main() {
     key_release_noise: document.getElementById("key-release-noise"),
     tickmarks_key_release_noise: document.getElementById("tickmarks_key_release_noise"),
 
+    reverb_mix: document.getElementById("reverb-mix"),
+    tickmarks_reverb_mix: document.getElementById("tickmarks_reverb_mix"),
+
     select_instrument: document.getElementById("instrument"),
     select_preset: document.getElementById("preset"),
     // select_output_mode: document.getElementById("output-mode"),
@@ -142,6 +146,7 @@ async function main() {
       ui.tickmarks_cond.appendChild(new Option('', i));
       ui.tickmarks_pedal_noise.appendChild(new Option('', i));
       ui.tickmarks_key_release_noise.appendChild(new Option('', i));
+      ui.tickmarks_reverb_mix.appendChild(new Option('', i));
   }
 
   ui.volume.addEventListener("change", async function() {
@@ -179,6 +184,16 @@ async function main() {
       handle_error(ui, error);
     });
   })
+
+  ui.reverb_mix.addEventListener("change", async function() {
+    set_ui_disabled(ui, true);
+    await pianoteq.set_reverb_mix(this.value).then(async(data) => {
+      await refresh_and_reenable_ui(ui);
+    }).catch((error) => {
+      handle_error(ui, error);
+    });
+  })
+
 
   ui.select_instrument.addEventListener("change",  function() {
     populate_preset_dropdown(ui, pianoteq_data, this.value);
